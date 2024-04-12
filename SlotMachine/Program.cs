@@ -7,6 +7,7 @@ class Program
     private const int SLOT_SIZE = 3;
     private const int LINE_COST = 1;
     private const int DECIMAL_DIGITS = 2;
+    private const int JACKPOT = 7;
 
     private const char CENTRAL_LINE = '1';
     private const char HORIZONTAL_LINES = '2';
@@ -135,6 +136,29 @@ class Program
         return value;
     }
 
+    static bool CheckJackpot(int[,] array)
+    {
+        bool isJackpot = true;
+        if (CheckLine(array, 0))
+        {
+            for (int i = 0; i < SLOT_SIZE; i++)
+            {
+                if (!CheckColumn(array, i))
+                {
+                    isJackpot = false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            isJackpot = false;
+        }
+
+        return isJackpot;
+        
+    }
+
     static void Main(string[] args)
     {
         Random rng = new Random();
@@ -166,7 +190,7 @@ class Program
             Console.WriteLine($"Press {DIAGONAL_LINES} - To bet on the two diagonals - Cost : {2 * LINE_COST} ");
             Console.WriteLine($"Press {ADD_MONEY} - To add credit - Current credit : {creditAccount} ");
             Console.WriteLine($"Press {QUIT_GAME} - To quit the game\n");
-            
+
             char userChoice = Console.ReadKey().KeyChar;
 
             if (userChoice == QUIT_GAME)
@@ -174,7 +198,7 @@ class Program
                 Console.WriteLine($"\nGame is over. You have {creditAccount} credits.");
                 break;
             }
-            
+
             if (!gameDefinition.Keys.Contains(userChoice))
             {
                 Console.Clear();
@@ -195,6 +219,17 @@ class Program
 
 
             int[,] slotArray = ArrayGenerator(rng);
+         
+            // Check for Jackpot
+            if (CheckJackpot(slotArray))
+            {
+                creditAccount += LINE_COST * JACKPOT;
+                Console.Clear();
+                DisplayArray(slotArray);
+                Console.WriteLine("\nYou Won the Jackpot!\n");
+                continue; 
+            }
+
             bool isWon = false;
             switch (userChoice)
             {
@@ -250,9 +285,10 @@ class Program
                     break;
             }
 
+
             Console.Clear();
             DisplayArray(slotArray);
-            Console.WriteLine(isWon ? "You Won!\n" : "You Lose\n");
+            Console.WriteLine(isWon ? "You Won!\n" : "Try again\n");
         } while (true);
     }
 }
