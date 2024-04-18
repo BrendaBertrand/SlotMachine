@@ -6,7 +6,7 @@ class Program
     {
         Random rng = new Random();
         
-        Console.WriteLine("Welcome to the Slot Machine!");
+        UIMethods.DisplayMessage("Welcome to the Slot Machine!");
         double creditAccount =
             LogicMethods.GetPositiveDouble("\nPlease enter the amount of credit you want to play with : ");
         creditAccount = Double.Round(creditAccount, Constants.DECIMAL_DIGITS);
@@ -40,10 +40,7 @@ class Program
             // Check for Jackpot
             if (LogicMethods.CheckJackpot(slotArray))
             {
-                creditAccount += Constants.LINE_COST * Constants.JACKPOT;
-                Console.Clear();
-                UIMethods.DisplayArray(slotArray);
-                Console.WriteLine("\nYou Won the Jackpot!\n");
+                creditAccount = LogicMethods.HandleJackpot(creditAccount, slotArray);
                 continue;
             }
 
@@ -103,7 +100,7 @@ class Program
             }
 
 
-            Console.Clear();
+            
             UIMethods.DisplayArray(slotArray);
             Console.WriteLine(isWon ? "You Won!\n" : "Try again\n");
         } while (true);

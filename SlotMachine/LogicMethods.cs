@@ -110,18 +110,24 @@ public class LogicMethods
         {
             isJackpot = false;
         }
-
         return isJackpot;
-        
+    }
+
+    public static double HandleJackpot(double creditAccount, int [,]slotArray)
+    {
+        creditAccount += Constants.LINE_COST * Constants.JACKPOT;
+        UIMethods.DisplayArray(slotArray);
+        UIMethods.DisplayMessage("\nYou Won the Jackpot!\n");
+        return creditAccount;
     }
     
     public static double GetPositiveDouble(string question)
     {
         double value = 0;
-        Console.Write(question);
+        UIMethods.DisplayMessage(question);
         while (!Double.TryParse(Console.ReadLine(), out value) || value <= 0)
         {
-            Console.WriteLine("Please enter a positive number");
+            UIMethods.DisplayMessage("Please enter a positive number\n");
         }
 
         return value;

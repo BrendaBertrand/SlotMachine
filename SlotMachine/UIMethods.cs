@@ -5,6 +5,7 @@ public class UIMethods
     //Display the array
     public static void DisplayArray(int[,] array)
     {
+        Console.Clear();
         for (int i = 0; i < Constants.SLOT_SIZE; i++)
         {
             for (int j = 0; j < Constants.SLOT_SIZE; j++)
@@ -22,17 +23,17 @@ public class UIMethods
 
     public static void DisplayMenu(double creditAccount)
     {
-        Console.WriteLine("Menu : ");
-        Console.WriteLine(
+        DisplayMessage("Menu : ");
+        DisplayMessage(
             $"Press {Constants.CENTRAL_LINE} - To bet on the central line - Cost : {Constants.LINE_COST} ");
-        Console.WriteLine(
+        DisplayMessage(
             $"Press {Constants.HORIZONTAL_LINES} - To bet on all the horizontal lines - Cost : {Constants.SLOT_SIZE * Constants.LINE_COST} ");
-        Console.WriteLine(
+        DisplayMessage(
             $"Press {Constants.VERTICAL_LINES} - To bet on all the vertical lines - Cost : {Constants.SLOT_SIZE * Constants.LINE_COST} ");
-        Console.WriteLine(
+        DisplayMessage(
             $"Press {Constants.DIAGONAL_LINES} - To bet on the two diagonals - Cost : {2 * Constants.LINE_COST} ");
-        Console.WriteLine($"Press {Constants.ADD_MONEY} - To add credit - Current credit : {creditAccount} ");
-        Console.WriteLine($"Press {Constants.QUIT_GAME} - To quit the game\n");
+        DisplayMessage($"Press {Constants.ADD_MONEY} - To add credit - Current credit : {creditAccount} ");
+        DisplayMessage($"Press {Constants.QUIT_GAME} - To quit the game\n");
     }
 
     public static char GetMenuChoice(double creditAccount)
@@ -47,7 +48,7 @@ public class UIMethods
         bool isGameOn = true;
         if (userChoice == Constants.QUIT_GAME)
         {
-            Console.WriteLine($"\nGame is over. You have {creditAccount} credits.");
+            DisplayMessage($"\nGame is over. You have {creditAccount} credits.\n");
             isGameOn = false;
         }
         return isGameOn;
@@ -59,17 +60,22 @@ public class UIMethods
         if (!Constants.gameDefinition.Keys.Contains(userChoice))
         {
             Console.Clear();
-            Console.WriteLine("Incorrect selection, Please try again. \n");
+            DisplayMessage("Incorrect selection, Please try again. \n");
             isCorrectChoice = false;
         }
         else if (Constants.gameDefinition[userChoice] > creditAccount)
         {
             Console.Clear();
-            Console.WriteLine("Insufficient credit. Select another game or add credit to your account.\n");
+            DisplayMessage("Insufficient credit. Select another game or add credit to your account.\n");
             isCorrectChoice = false;
         }
 
         return isCorrectChoice;
 
+    }
+
+    public static void DisplayMessage(string message)
+    {
+        Console.WriteLine(message);
     }
 }
