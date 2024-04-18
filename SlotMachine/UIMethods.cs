@@ -78,4 +78,9 @@ public class UIMethods
     {
         Console.WriteLine(message);
     }
+
+    public static void ClearUI()
+    {
+        Console.Clear();
+    }
 }

@@ -3,20 +3,21 @@ namespace SlotMachine;
 public class LogicMethods
 {
     // Creation of the array
-    public static int[,] ArrayGenerator(Random randomGen)
+    public static int[,] ArrayGenerator()
     {
+        Random rng = new Random();
         int[,] slotArray = new int[Constants.SLOT_SIZE, Constants.SLOT_SIZE];
         for (int i = 0; i < Constants.SLOT_SIZE; i++)
         {
             for (int j = 0; j < Constants.SLOT_SIZE; j++)
             {
-                slotArray[i, j] = randomGen.Next(Constants.MIN_VALUE_SLOT, Constants.MAX_VALUE_SLOT + 1);
+                slotArray[i, j] = rng.Next(Constants.MIN_VALUE_SLOT, Constants.MAX_VALUE_SLOT + 1);
             }
         }
 
         return slotArray;
     }
-    
+
     //Check line
     public static bool CheckLine(int[,] array, int line)
     {
@@ -35,6 +36,7 @@ public class LogicMethods
 
         return equal == Constants.SLOT_SIZE - 1;
     }
+
     //Check column
     public static bool CheckColumn(int[,] array, int col)
     {
@@ -91,7 +93,7 @@ public class LogicMethods
 
         return equal == Constants.SLOT_SIZE - 1;
     }
-    
+
     public static bool CheckJackpot(int[,] array)
     {
         bool isJackpot = true;
@@ -110,17 +112,18 @@ public class LogicMethods
         {
             isJackpot = false;
         }
+
         return isJackpot;
     }
 
-    public static double HandleJackpot(double creditAccount, int [,]slotArray)
+    public static double HandleJackpot(double creditAccount, int[,] slotArray)
     {
         creditAccount += Constants.LINE_COST * Constants.JACKPOT;
         UIMethods.DisplayArray(slotArray);
         UIMethods.DisplayMessage("\nYou Won the Jackpot!\n");
         return creditAccount;
     }
-    
+
     public static double GetPositiveDouble(string question)
     {
         double value = 0;
@@ -132,5 +135,63 @@ public class LogicMethods
 
         return value;
     }
-    
+
+    public static double CheckForGain(char userChoice, int[,] slotArray)
+    {
+        double gain = 0;
+        switch (userChoice)
+        {
+            case Constants.CENTRAL_LINE:
+                if (CheckLine(slotArray, Constants.SLOT_SIZE / 2))
+                {
+                    gain = Constants.LINE_COST;
+                }
+
+                break;
+            case Constants.HORIZONTAL_LINES:
+                for (int i = 0; i < Constants.SLOT_SIZE; i++)
+                {
+                    if (CheckLine(slotArray, i))
+                    {
+                        gain += Constants.LINE_COST;
+                    }
+                }
+
+                break;
+            case Constants.VERTICAL_LINES:
+                for (int i = 0; i < Constants.SLOT_SIZE; i++)
+                {
+                    if (CheckColumn(slotArray, i))
+                    {
+                        gain += Constants.LINE_COST;
+                    }
+                }
+
+                break;
+            case Constants.DIAGONAL_LINES:
+                if (CheckMainDiagonal(slotArray))
+                {
+                    gain = Constants.LINE_COST;
+                }
+
+                if (CheckCounterDiagonal(slotArray))
+                {
+                    gain += Constants.LINE_COST;
+                }
+
+                break;
+        }
+
+        return gain;
+    }
+
+    public static double AddCredit(double creditAccount, string question)
+    {
+        creditAccount +=
+            Double.Round(
+                LogicMethods.GetPositiveDouble(question),
+                Constants.DECIMAL_DIGITS);
+        UIMethods.ClearUI();
+        return creditAccount;
+    }
 }
