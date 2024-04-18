@@ -18,11 +18,11 @@ public class Constants
     
     public static Dictionary<char, int> gameDefinition = new Dictionary<char, int>()
     {
-        { Constants.CENTRAL_LINE, Constants.LINE_COST },
-        { Constants.HORIZONTAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
-        { Constants.VERTICAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
-        { Constants.DIAGONAL_LINES, Constants.LINE_COST * 2 },
-        { Constants.ADD_MONEY, 0 },
+        { CENTRAL_LINE, LINE_COST },
+        { HORIZONTAL_LINES, LINE_COST * SLOT_SIZE },
+        { VERTICAL_LINES, LINE_COST * SLOT_SIZE },
+        { DIAGONAL_LINES, LINE_COST * 2 },
+        { ADD_MONEY, 0 },
     };
 
 }
