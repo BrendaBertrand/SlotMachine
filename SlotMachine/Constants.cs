@@ -15,5 +15,14 @@ public class Constants
     public const char DIAGONAL_LINES = '4';
     public const char ADD_MONEY = '5';
     public const char QUIT_GAME = '6';
+    
+    public static Dictionary<char, int> gameDefinition = new Dictionary<char, int>()
+    {
+        { Constants.CENTRAL_LINE, Constants.LINE_COST },
+        { Constants.HORIZONTAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
+        { Constants.VERTICAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
+        { Constants.DIAGONAL_LINES, Constants.LINE_COST * 2 },
+        { Constants.ADD_MONEY, 0 },
+    };
 
 }

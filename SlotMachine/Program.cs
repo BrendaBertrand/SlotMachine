@@ -4,81 +4,9 @@ class Program
 {
 
 
-    //Check line
-    static bool CheckLine(int[,] array, int line)
-    {
-        int equal = 0;
-        for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
-        {
-            if (array[line, i] == array[line, i + 1])
-            {
-                equal++;
-            }
-            else
-            {
-                break;
-            }
-        }
 
-        return equal == Constants.SLOT_SIZE - 1;
-    }
 
-    //Check column
-    static bool CheckColumn(int[,] array, int col)
-    {
-        int equal = 0;
-        for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
-        {
-            if (array[i, col] == array[i + 1, col])
-            {
-                equal++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return equal == Constants.SLOT_SIZE - 1;
-    }
-
-    //Check diagonal
-    static bool CheckMainDiagonal(int[,] array)
-    {
-        int equal = 0;
-        for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
-        {
-            if (array[i, i] == array[i + 1, i + 1])
-            {
-                equal++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return equal == Constants.SLOT_SIZE - 1;
-    }
-
-    //Check counter diagonal
-    static bool CheckCounterDiagonal(int[,] array)
-    {
-        int equal = 0;
-        for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
-        {
-            if (array[i, (Constants.SLOT_SIZE - 1) - i] == array[i + 1, (Constants.SLOT_SIZE - 1) - (i + 1)])
-            {
-                equal++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return equal == Constants.SLOT_SIZE - 1;
-    }
+    
 
     //Display the array
     static void DisplayArray(int[,] array)
@@ -96,55 +24,17 @@ class Program
         }
     }
 
-    static double GetPositiveDouble(string question)
-    {
-        double value = 0;
-        Console.Write(question);
-        while (!Double.TryParse(Console.ReadLine(), out value) || value <= 0)
-        {
-            Console.WriteLine("Please enter a positive number");
-        }
 
-        return value;
-    }
 
-    static bool CheckJackpot(int[,] array)
-    {
-        bool isJackpot = true;
-        if (CheckLine(array, 0))
-        {
-            for (int i = 0; i < Constants.SLOT_SIZE; i++)
-            {
-                if (!CheckColumn(array, i))
-                {
-                    isJackpot = false;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            isJackpot = false;
-        }
 
-        return isJackpot;
-        
-    }
 
     static void Main(string[] args)
     {
         Random rng = new Random();
-        Dictionary<char, int> gameDefinition = new Dictionary<char, int>()
-        {
-            { Constants.CENTRAL_LINE, Constants.LINE_COST },
-            { Constants.HORIZONTAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
-            { Constants.VERTICAL_LINES, Constants.LINE_COST * Constants.SLOT_SIZE },
-            { Constants.DIAGONAL_LINES, Constants.LINE_COST * 2 },
-            { Constants.ADD_MONEY, 0 },
-        };
+
 
         Console.WriteLine("Welcome to the Slot Machine!");
-        double creditAccount = GetPositiveDouble("\nPlease enter the amount of credit you want to play with : ");
+        double creditAccount = LogicMethods.GetPositiveDouble("\nPlease enter the amount of credit you want to play with : ");
         creditAccount = Double.Round(creditAccount, Constants.DECIMAL_DIGITS);
         // char[] menuOptions = new char[]{CENTRAL_LINE, HORIZONTAL_LINES, VERTICAL_LINES,DIAGONAL_LINES,ADD_MONEY};
 
@@ -171,7 +61,7 @@ class Program
                 break;
             }
 
-            if (!gameDefinition.Keys.Contains(userChoice))
+            if (!Constants.gameDefinition.Keys.Contains(userChoice))
             {
                 Console.Clear();
                 Console.WriteLine("Incorrect selection, Please try again. \n");
@@ -179,7 +69,7 @@ class Program
             }
 
 
-            if (gameDefinition[userChoice] > creditAccount)
+            if (Constants.gameDefinition[userChoice] > creditAccount)
             {
                 Console.Clear();
                 Console.WriteLine("Insufficient credit. Select another game or add credit to your account.\n");
@@ -187,13 +77,13 @@ class Program
             }
 
 
-            creditAccount -= gameDefinition[userChoice];
+            creditAccount -= Constants.gameDefinition[userChoice];
 
 
             int[,] slotArray = LogicMethods.ArrayGenerator(rng);
          
             // Check for Jackpot
-            if (CheckJackpot(slotArray))
+            if (LogicMethods.CheckJackpot(slotArray))
             {
                 creditAccount += Constants.LINE_COST * Constants.JACKPOT;
                 Console.Clear();
@@ -206,7 +96,7 @@ class Program
             switch (userChoice)
             {
                 case Constants.CENTRAL_LINE:
-                    if (CheckLine(slotArray, Constants.SLOT_SIZE / 2))
+                    if (LogicMethods.CheckLine(slotArray, Constants.SLOT_SIZE / 2))
                     {
                         creditAccount += Constants.LINE_COST;
                         isWon = true;
@@ -216,7 +106,7 @@ class Program
                 case Constants.HORIZONTAL_LINES:
                     for (int i = 0; i < Constants.SLOT_SIZE; i++)
                     {
-                        if (CheckLine(slotArray, i))
+                        if (LogicMethods.CheckLine(slotArray, i))
                         {
                             creditAccount += Constants.LINE_COST;
                             isWon = true;
@@ -227,7 +117,7 @@ class Program
                 case Constants.VERTICAL_LINES:
                     for (int i = 0; i < Constants.SLOT_SIZE; i++)
                     {
-                        if (CheckColumn(slotArray, i))
+                        if (LogicMethods.CheckColumn(slotArray, i))
                         {
                             creditAccount += Constants.LINE_COST;
                             isWon = true;
@@ -236,13 +126,13 @@ class Program
 
                     break;
                 case Constants.DIAGONAL_LINES:
-                    if (CheckMainDiagonal(slotArray))
+                    if (LogicMethods.CheckMainDiagonal(slotArray))
                     {
                         creditAccount += Constants.LINE_COST;
                         isWon = true;
                     }
 
-                    if (CheckCounterDiagonal(slotArray))
+                    if (LogicMethods.CheckCounterDiagonal(slotArray))
                     {
                         creditAccount += Constants.LINE_COST;
                         isWon = true;
@@ -251,10 +141,10 @@ class Program
                     break;
                 case Constants.ADD_MONEY:
                     creditAccount +=
-                        Double.Round(GetPositiveDouble("\nHow much credit do you want to add to your account ?\n "),
+                        Double.Round(LogicMethods.GetPositiveDouble("\nHow much credit do you want to add to your account ?\n "),
                             Constants.DECIMAL_DIGITS);
                     continue;
-                    break;
+                    
             }
 
 
