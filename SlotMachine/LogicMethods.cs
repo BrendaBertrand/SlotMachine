@@ -87,11 +87,11 @@ public class LogicMethods
     public static bool CheckJackpot(int[,] array)
     {
         bool isJackpot = true;
-        if (LogicMethods.CheckLine(array, 0))
+        if (CheckLine(array, 0))
         {
             for (int i = 0; i < Constants.SLOT_SIZE; i++)
             {
-                if (!LogicMethods.CheckColumn(array, i))
+                if (!CheckColumn(array, i))
                 {
                     isJackpot = false;
                     break;
@@ -179,7 +179,7 @@ public class LogicMethods
     {
         creditAccount +=
             Double.Round(
-                LogicMethods.GetPositiveDouble(question),
+                GetPositiveDouble(question),
                 Constants.DECIMAL_DIGITS);
         UIMethods.ClearUI();
         return creditAccount;
