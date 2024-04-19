@@ -21,39 +21,29 @@ public class LogicMethods
     //Check line
     public static bool CheckLine(int[,] array, int line)
     {
-        int equal = 0;
         for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
         {
-            if (array[line, i] == array[line, i + 1])
+            if (array[line, i] != array[line, i + 1])
             {
-                equal++;
-            }
-            else
-            {
-                break;
+                return false;
             }
         }
+        return true;
 
-        return equal == Constants.SLOT_SIZE - 1;
     }
 
     //Check column
     public static bool CheckColumn(int[,] array, int col)
     {
-        int equal = 0;
+        
         for (int i = 0; i < Constants.SLOT_SIZE - 1; i++)
         {
-            if (array[i, col] == array[i + 1, col])
+            if (array[i, col] != array[i + 1, col])
             {
-                equal++;
-            }
-            else
-            {
-                break;
+                return false;
             }
         }
-
-        return equal == Constants.SLOT_SIZE - 1;
+        return true;
     }
 
     //Check diagonal
